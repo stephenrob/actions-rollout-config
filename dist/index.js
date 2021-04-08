@@ -29,7 +29,7 @@ async function run() {
     merge(updatedConfig, config)
     merge(updatedConfig, newConfig)
 
-    let yamlStr = yaml.safeDump(updatedConfig);
+    let yamlStr = yaml.dump(updatedConfig);
     fs.writeFileSync(configFile, yamlStr, 'utf8');
 
     core.debug('Updated config')
