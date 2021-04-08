@@ -1,13 +1,12 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
+name: 'Actions Config Rollout'
+description: 'Update specified config values in given yaml file'
 inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
+  config_file:  # id of input
+    description: 'path to config file to update'
     required: true
-    default: '1000'
-outputs:
-  time: # output will be available to future steps
-    description: 'The message to output'
+  config:
+    description: 'new config values to overwrite in file'
+    required: true
 runs:
   using: 'node12'
   main: 'dist/index.js'

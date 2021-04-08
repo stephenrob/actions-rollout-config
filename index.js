@@ -1,18 +1,30 @@
 const core = require('@actions/core');
-const wait = require('./wait');
+const yaml = require('js-yaml');
+const fs = require('fs');
+const merge = require('lodash.merge');
 
 
 // most @actions toolkit packages have async methods
 async function run() {
   try {
-    const ms = core.getInput('milliseconds');
-    core.info(`Waiting ${ms} milliseconds ...`);
+    const configFile = core.getInput('config_file');
+    const newConfig = yaml.load(core.getInput('config'))
+    let fileContents = fs.readFileSync(configFile, 'utf-8');
+    let config = yaml.load(fileContents);
+    
+    core.debug('Read config')
+    core.debug(config)
+    core.debug('Read new config')
+    core.debug(newConfig)
 
-    core.debug((new Date()).toTimeString()); // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
-    await wait(parseInt(ms));
-    core.info((new Date()).toTimeString());
+    let updatedConfig = {}
 
-    core.setOutput('time', new Date().toTimeString());
+    merge(updatedConfig, config)
+    merge(updatedConfig, newConfig)
+
+    core.debug('Updated config')
+    core.debug(updatedConfig)
+
   } catch (error) {
     core.setFailed(error.message);
   }
