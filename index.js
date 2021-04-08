@@ -11,7 +11,7 @@ async function run() {
     const newConfig = yaml.load(core.getInput('config'))
     let fileContents = fs.readFileSync(configFile, 'utf-8');
     let config = yaml.load(fileContents);
-    
+
     core.debug('Read config')
     core.debug(config)
     core.debug('Read new config')
@@ -21,6 +21,9 @@ async function run() {
 
     merge(updatedConfig, config)
     merge(updatedConfig, newConfig)
+
+    let yamlStr = yaml.dump(updatedConfig);
+    fs.writeFileSync(configFile, yamlStr, 'utf8');
 
     core.debug('Updated config')
     core.debug(updatedConfig)
